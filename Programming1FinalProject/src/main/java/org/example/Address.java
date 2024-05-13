@@ -1,5 +1,14 @@
 package org.example;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@ToString
+@EqualsAndHashCode
+@Getter
+@Setter
 public class Address {
     private int streetNo;
     private String street;
@@ -7,6 +16,15 @@ public class Address {
     private String province;
     private String postalCode;
     private String country;
+
+    public Address(int streetNo, String street, String city, String province, String postalCode, String country) {
+        this.streetNo = streetNo;
+        this.street = street;
+        this.city = city;
+        this.province = province;
+        this.postalCode = (isPostalCodeValid(postalCode)) ? postalCode : null;
+        this.country = country;
+    }
 
     /**
      * checks if the given postal code is valid
@@ -23,7 +41,16 @@ public class Address {
             return false;
         }
 
-        if (len == 6) {
+        if (len == 7) { //checks format CDC DCD and if its good, puts it in format CDCDCD
+            for (int i = 0; i < len; i++) {
+                if (postalCode.charAt(i) == ' ' && i != 3) {
+                    return false;
+                }
+            }
+            postalCode = removeSpaces(postalCode);
+        }
+
+        if (len == 6) { //when postal code is in format CDCDCD
             for (int i = 0; i < len; i++) {
                 char c = postalCode.charAt(i);
 
@@ -32,20 +59,28 @@ public class Address {
                         return false;
                     }
                 } else {
-                    if (c <= 57 || c  >= 48) {
+                    if (c <= 57 || c >= 48) {
                         return false;
                     }
                 }
             }
-        } else if (len == 7) {
-            if (postalCode.charAt(3) == ' ') {
-                //postalCode = ;
-            }
-            for (int i = 0; i < len; i ++) {
-                char c = postalCode.charAt(i);
-
-            }
         }
         return true;
+    }
+
+    /**
+     * removes spaces from a given String
+     * @param strIn the input string
+     * @return the string with the spaces removed
+     */
+    public static String removeSpaces(String strIn) {
+        String strOut = "";
+        for (int i = 0; i < strIn.length(); i++) {
+            if (strIn.charAt(i) == ' ') {
+                continue;
+            }
+            strOut += strIn.charAt(i);
+        }
+        return strOut;
     }
 }
