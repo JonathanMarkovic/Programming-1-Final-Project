@@ -12,7 +12,7 @@ import lombok.ToString;
 public class Department {
     private String departmentId;
     private String departmentName;
-    private static int nextId;
+    private static int nextId = 1;
 
     public Department(String departmentId, String departmentName) {
         if (validateDepartmentName(departmentName)) {

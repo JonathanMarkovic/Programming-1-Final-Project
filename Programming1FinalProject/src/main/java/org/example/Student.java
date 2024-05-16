@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 @EqualsAndHashCode
@@ -16,7 +17,7 @@ public class Student {
     private Address address;
     Department department;
     ArrayList<Course> registeredcourses;
-    private static int nextId;
+    private static int nextId = 1;
 
     /**
      * registers the student to a given course
@@ -30,6 +31,7 @@ public class Student {
 
         //TODO: check this over after doing the course class
         registeredcourses.add(course);
+        course.registerStudent(this);
         return true;
     }
 
@@ -56,6 +58,10 @@ public class Student {
 
     @Override
     public String toString() {
+        ArrayList<String> courses = new ArrayList<>();
+        for (Course course : registeredcourses) {
+            courses.add(course.toSimplifiedString());
+        }
         return String.format("Student {\n" +
                 "Student ID: %s\n" +
                 "Student Name: %s\n" +
@@ -63,7 +69,6 @@ public class Student {
                 "Address: %s\n" +
                 "Department: %s\n" +
                 "Registered Courses: {",
-                studentId, studentName, gender, address, department, registeredcourses.toString());
-        //TODO: Check again after doing course class for simplified to string method
+                studentId, studentName, gender, address, department, courses);
     }
 }
