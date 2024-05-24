@@ -14,9 +14,9 @@ public class Department {
     private String departmentName;
     private static int nextId = 1;
 
-    public Department(String departmentId, String departmentName) {
+    public Department(String departmentName) {
         if (validateDepartmentName(departmentName)) {
-            this.departmentId = departmentId;
+            this.departmentId = "" + nextId++;
             this.departmentName = departmentName;
         } else {
             this.departmentId = null;

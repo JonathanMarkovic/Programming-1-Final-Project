@@ -19,6 +19,15 @@ public class Student {
     ArrayList<Course> registeredcourses;
     private static int nextId = 1;
 
+    public Student(String studentName, Gender gender, Address address, Department department) {
+        this.studentId = "" + nextId++;
+        this.studentName = studentName;
+        this.gender = gender;
+        this.address = address;
+        this.department = department;
+        registeredcourses = new ArrayList<>();
+    }
+
     /**
      * registers the student to a given course
      * @param course the course name

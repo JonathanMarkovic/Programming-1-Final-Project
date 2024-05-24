@@ -20,11 +20,19 @@ public class Course {
     private ArrayList<Double> finalScores;
     private static int nextId = 1;
 
-    //TODO: put in contructor with initialized ArrayLists
+    public Course(String courseName, double credits, Department department) {
+        this.courseId = "" + nextId++;
+        this.courseName = courseName;
+        this.credits = credits;
+        this.department = department;
+        assignments = new ArrayList<>();
+        registeredStudents = new ArrayList<>();
+        finalScores = new ArrayList<>();
+    }
 
     /**
      * checks if the assignment weights for the course are all valid(add up to 100)
-     * @return
+     * @return true if the assignment weight is valid
      */
     public boolean isAssignmentWeightValid() {
         double weight = 0;
@@ -34,7 +42,7 @@ public class Course {
             weight += assignment.getWeight();
         }
 
-        if (Math.abs(weight - maxWeight) < 0.000000001) {
+        if (weight - maxWeight == 0) {
             return true;
         }
 
@@ -43,8 +51,8 @@ public class Course {
 
     /**
      * adds a student to the list of registeredStudents
-     * @param student
-     * @return
+     * @param student the student being added to the list of registered students
+     * @return true if the student was successfully added
      */
     public boolean registerStudent(Student student) {
         if (registeredStudents.contains(student)) {
@@ -54,9 +62,12 @@ public class Course {
         registeredStudents.add(student);
         finalScores.add(null);
 
-        for (Assignment assignment : assignments) {
+        int studentIdx = registeredStudents.indexOf(student);
+        for (int i = 0; i < assignments.size(); i++) {
+            Assignment assignment = assignments.get(i);
             assignment.getScores().add(null);
         }
+
         return true;
     }
 
@@ -64,15 +75,13 @@ public class Course {
      * calculates the average weighted grade for a student
      */
     public void calcStudentsAverage() {
-        //TODO: simplify in one regular for loop
-        for (Student student : registeredStudents) {        //goes through each student
-            double finalScore = 0;                          //each student's final score is 0 until assignment sores get added in
-            int idx = registeredStudents.indexOf(student);  //gets their index which should be the same index as their assignments/scores within the assignment
+        for (int i = 0; i < registeredStudents.size(); i++) {
+            double finalScore = 0;
+            Assignment assignment = assignments.get(i);
+            int score = assignment.getScores().get(i);
 
-            for (Assignment assignment : assignments) {     //goes through each assignment for the class
-                finalScore += assignment.getScores().get(idx) * assignment.getWeight();  //score * weight should be weighted score
-                finalScores.add(finalScore);
-            }
+            finalScore += score * assignment.getWeight();
+            finalScores.add(finalScore);
         }
     }
 
@@ -104,15 +113,41 @@ public class Course {
     }
 
     /**
-     * displays the scores for each student for each assignment, assignment average, and final score
+     * Displays the scores for each student for each assignment, assignment average, and final score
      */
     public void displayScores() {
-        System.out.printf("Course: %s");
+        System.out.printf("Course: %s %s\n", courseName, courseId);
+        System.out.printf("Final Score    ");
+        System.out.printf("Student        ");
+        int num = 1;
+        for (int i = 0; i < assignments.size(); i++) {
+            Assignment assignment = assignments.get(i);
+            System.out.printf("%15s", assignment.getAssignmentName());
+        }
+        System.out.printf("\n");
+        for (int i = 0; i < registeredStudents.size(); i++) {
+            Student student = registeredStudents.get(i);
+            System.out.printf("%15d %15s ", finalScores.get(i), registeredStudents.get(i).getStudentName());
+
+            for (int j = 0; j < assignments.size(); j++) {
+                Assignment assignment = assignments.get(i);
+                int score = assignment.getScores().get(i);
+                System.out.printf("%15d", score);
+            }
+            System.out.printf("\n");
+        }
+        System.out.printf("%30s", "Average");
+        for (int i = 0; i < assignments.size(); i++) {
+            Assignment assignment = assignments.get(i);
+            double average = assignment.getAssignmentAverage();
+            System.out.printf("%15f", average);
+        }
+        System.out.printf("\n");
     }
 
     /**
      * simplified toString method
-     * @return
+     * @return the simplified String
      */
     public String toSimplifiedString() {
         return String.format("Course ID: %s, Course Name: %s, DepartmentName: %d\n",
