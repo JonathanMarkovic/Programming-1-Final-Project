@@ -7,16 +7,21 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.Random;
 
-@Getter
 @Setter
 @EqualsAndHashCode
 public class Assignment {
+    @Getter
     private String assignmentId;
+    @Getter
     private String assignmentName;
+    @Getter
     private double weight;
+    @Getter
     private int maxScore;
     private double assignmentAverage;
+    @Getter
     private ArrayList<Integer> scores;
+    @Getter
     private static int nextId = 1;
 
     public Assignment(String assignmentName, double weight, int maxScore, int numStudents) {
@@ -71,5 +76,10 @@ public class Assignment {
                 ", weight=" + weight +
                 ", maxScore=" + maxScore +
                 '}';
+    }
+
+    public double getAssignmentAverage() {
+        calcAssignmentAverage();
+        return assignmentAverage;
     }
 }

@@ -130,7 +130,7 @@ public class Course {
             System.out.printf("%15d %15s ", finalScores.get(i), registeredStudents.get(i).getStudentName());
 
             for (int j = 0; j < assignments.size(); j++) {
-                Assignment assignment = assignments.get(i);
+                Assignment assignment = assignments.get(j);
                 int score = assignment.getScores().get(i);
                 System.out.printf("%15d", score);
             }
@@ -140,7 +140,7 @@ public class Course {
         for (int i = 0; i < assignments.size(); i++) {
             Assignment assignment = assignments.get(i);
             double average = assignment.getAssignmentAverage();
-            System.out.printf("%15f", average);
+            System.out.printf("%15.2f", average);
         }
         System.out.printf("\n");
     }
