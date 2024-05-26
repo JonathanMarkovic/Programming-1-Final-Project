@@ -9,8 +9,14 @@ public class Util {
      */
     public static String toTitleCase(String strIn) {
         String strOut = "";
-
-        return strOut;
+        String[] strIns = strIn.split(" ");
+        for (String str : strIns) {
+            String first = str.substring(0,1).toUpperCase();
+            String second = str.substring(1).toLowerCase();
+            String combined = first + second;
+            strOut += combined + " ";
+        }
+        return strOut.trim();
     }
 
 }

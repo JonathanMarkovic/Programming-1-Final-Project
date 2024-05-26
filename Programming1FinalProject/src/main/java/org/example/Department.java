@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.example.util.Util;
 
 @ToString
 @EqualsAndHashCode
@@ -17,7 +18,7 @@ public class Department {
     public Department(String departmentName) {
         if (validateDepartmentName(departmentName)) {
             this.departmentId = "" + nextId++;
-            this.departmentName = departmentName;
+            this.departmentName = Util.toTitleCase(departmentName);
         } else {
             this.departmentId = null;
             this.departmentName = null;

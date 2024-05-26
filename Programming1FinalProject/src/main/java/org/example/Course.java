@@ -3,6 +3,7 @@ package org.example;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.util.Util;
 
 import java.util.ArrayList;
 
@@ -10,7 +11,6 @@ import java.util.ArrayList;
 @Setter
 @EqualsAndHashCode
 public class Course {
-    //TODO: follow assignment instructions
     private String courseId;
     private String courseName;
     private double credits;
@@ -22,7 +22,7 @@ public class Course {
 
     public Course(String courseName, double credits, Department department) {
         this.courseId = "" + nextId++;
-        this.courseName = courseName;
+        this.courseName = Util.toTitleCase(courseName);
         this.credits = credits;
         this.department = department;
         assignments = new ArrayList<>();
@@ -77,11 +77,13 @@ public class Course {
     public void calcStudentsAverage() {
         for (int i = 0; i < registeredStudents.size(); i++) {
             double finalScore = 0;
-            Assignment assignment = assignments.get(i);
-            int score = assignment.getScores().get(i);
+            for (int j = 0; j < assignments.size(); j++) {
+                Assignment assignment = assignments.get(j);
+                int score = assignment.getScores().get(i);
 
-            finalScore += score * assignment.getWeight();
-            finalScores.add(finalScore);
+                finalScore += score * assignment.getWeight();
+            }
+            finalScores.set(i, finalScore);
         }
     }
 
@@ -117,22 +119,22 @@ public class Course {
      */
     public void displayScores() {
         System.out.printf("Course: %s %s\n", courseName, courseId);
-        System.out.printf("Final Score    ");
-        System.out.printf("Student        ");
+        System.out.printf("Final Score         ");
+        System.out.printf("Student             ");
         int num = 1;
         for (int i = 0; i < assignments.size(); i++) {
             Assignment assignment = assignments.get(i);
-            System.out.printf("%15s", assignment.getAssignmentName());
+            System.out.printf("%20s", assignment.getAssignmentName());
         }
         System.out.printf("\n");
         for (int i = 0; i < registeredStudents.size(); i++) {
             Student student = registeredStudents.get(i);
-            System.out.printf("%15d %15s ", finalScores.get(i), registeredStudents.get(i).getStudentName());
+            System.out.printf("%20.2f %20s ", finalScores.get(i), student.getStudentName());
 
             for (int j = 0; j < assignments.size(); j++) {
                 Assignment assignment = assignments.get(j);
                 int score = assignment.getScores().get(i);
-                System.out.printf("%15d", score);
+                System.out.printf("%20d", score);
             }
             System.out.printf("\n");
         }
@@ -140,7 +142,7 @@ public class Course {
         for (int i = 0; i < assignments.size(); i++) {
             Assignment assignment = assignments.get(i);
             double average = assignment.getAssignmentAverage();
-            System.out.printf("%15.2f", average);
+            System.out.printf("%20.2f", average);
         }
         System.out.printf("\n");
     }

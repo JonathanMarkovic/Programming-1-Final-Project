@@ -3,6 +3,7 @@ package org.example;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.util.Util;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,7 +27,7 @@ public class Assignment {
 
     public Assignment(String assignmentName, double weight, int maxScore, int numStudents) {
         this.assignmentId = "" + nextId++;
-        this.assignmentName = assignmentName;
+        this.assignmentName = Util.toTitleCase(assignmentName);
         this.weight = weight;
         this.maxScore = maxScore;
         scores = new ArrayList<>(numStudents);
