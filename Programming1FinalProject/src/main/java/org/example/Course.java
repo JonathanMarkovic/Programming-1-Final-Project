@@ -7,17 +7,23 @@ import org.example.util.Util;
 
 import java.util.ArrayList;
 
-@Getter
 @Setter
 @EqualsAndHashCode
 public class Course {
+    @Getter
     private String courseId;
+    @Getter
     private String courseName;
+    @Getter
     private double credits;
+    @Getter
     private Department department;
+    @Getter
     private ArrayList<Assignment> assignments;
+    @Getter
     private ArrayList<Student> registeredStudents;
     private ArrayList<Double> finalScores;
+    @Getter
     private static int nextId = 1;
 
     public Course(String courseName, double credits, Department department) {
@@ -36,13 +42,13 @@ public class Course {
      */
     public boolean isAssignmentWeightValid() {
         double weight = 0;
-        int maxWeight = 1;
+        double maxWeight = 1.0;
 
         for (Assignment assignment : assignments) {
             weight += assignment.getWeight();
         }
 
-        if (weight - maxWeight == 0) {
+        if (weight == maxWeight) {
             return true;
         }
 
@@ -79,6 +85,9 @@ public class Course {
             double finalScore = 0;
             for (int j = 0; j < assignments.size(); j++) {
                 Assignment assignment = assignments.get(j);
+                if (assignment.getScores().get(i) == null) {
+                    continue;
+                }
                 int score = assignment.getScores().get(i);
 
                 finalScore += score * assignment.getWeight();
@@ -96,6 +105,19 @@ public class Course {
      */
     public boolean addAssignment(String assignmentName, double weight, int maxScore) {
         Assignment assignment = new Assignment(assignmentName, weight, maxScore, registeredStudents.size());
+        if (assignments.contains(assignment)) {
+            return false;
+        }
+        assignments.add(assignment);
+        return true;
+    }
+
+    /**
+     * adds an assignment to the course's list of assignments
+     * @param assignment the assignment being added
+     * @return true if the assignment was added successfully
+     */
+    public boolean addAssignment(Assignment assignment) {
         if (assignments.contains(assignment)) {
             return false;
         }
@@ -169,5 +191,10 @@ public class Course {
                 "Assignments: %s\n" +
                 "Registered Students: %s\n",
                 courseName, credits, department.getDepartmentName() ,assignments.toString(), students);
+    }
+
+    public ArrayList<Double> getFinalScores() {
+        calcStudentsAverage();
+        return finalScores;
     }
 }

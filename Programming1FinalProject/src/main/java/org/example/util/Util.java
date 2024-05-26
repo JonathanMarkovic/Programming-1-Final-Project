@@ -8,6 +8,10 @@ public class Util {
      * @return the string in titlecase
      */
     public static String toTitleCase(String strIn) {
+        if (strIn == null) {
+            return null;
+        }
+
         String strOut = "";
         String[] strIns = strIn.split(" ");
         for (String str : strIns) {

@@ -40,8 +40,11 @@ public class Assignment {
     public void calcAssignmentAverage() {
         double avg = 0;
 
-        for (int score : scores) {
-            avg += score;
+        for (int i = 0; i < scores.size(); i++) {
+            Integer score = scores.get(i);
+            if (score != null) {
+                avg += score;
+            }
         }
 
         assignmentAverage = avg / scores.size();
